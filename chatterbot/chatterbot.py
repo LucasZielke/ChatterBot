@@ -1,38 +1,14 @@
-from .utils.module_loading import import_module
+from .adapters import Adaptation
 from .conversation import Statement, Response
 
 
-class ChatBot(object):
+class ChatBot(Adaptation):
 
     def __init__(self, name, **kwargs):
+        super(ChatBot, self).__init__(**kwargs)
+
         self.name = name
-
-        storage_adapter = kwargs.get("storage_adapter",
-            "chatterbot.adapters.storage.JsonDatabaseAdapter"
-        )
-
-        logic_adapter = kwargs.get("logic_adapter",
-            "chatterbot.adapters.logic.ClosestMatchAdapter"
-        )
-
-        io_adapter = kwargs.get("io_adapter",
-            "chatterbot.adapters.io.TerminalAdapter"
-        )
-
-        PluginChooser = import_module("chatterbot.adapters.plugins.PluginChooser")
-        self.plugin_chooser = PluginChooser(**kwargs)
-
-        StorageAdapter = import_module(storage_adapter)
-        self.storage = StorageAdapter(**kwargs)
-
-        LogicAdapter = import_module(logic_adapter)
-        self.logic = LogicAdapter(**kwargs)
-
-        IOAdapter = import_module(io_adapter)
-        self.io = IOAdapter(**kwargs)
-
         self.trainer = None
-
         self.recent_statements = []
 
     def get_last_statement(self):
@@ -177,7 +153,7 @@ class ChatBot(object):
         """
         from .training import Trainer
 
-        self.trainer = Trainer(self.storage)
+        self.trainer = Trainer(self.adapters.storage_adapter)
 
         if isinstance(conversation, str):
             corpora = list(args)

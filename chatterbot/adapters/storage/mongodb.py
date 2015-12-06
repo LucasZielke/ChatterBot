@@ -6,8 +6,8 @@ from pymongo import MongoClient
 
 class MongoDatabaseAdapter(StorageAdapter):
 
-    def __init__(self, **kwargs):
-        super(MongoDatabaseAdapter, self).__init__(**kwargs)
+    def __init__(self, adapters, **kwargs):
+        super(MongoDatabaseAdapter, self).__init__(adapters, **kwargs)
 
         self.database_name = self.kwargs.get("database", "chatterbot-database")
 

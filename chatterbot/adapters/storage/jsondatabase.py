@@ -6,8 +6,8 @@ from jsondb import Database
 
 class JsonDatabaseAdapter(StorageAdapter):
 
-    def __init__(self, **kwargs):
-        super(JsonDatabaseAdapter, self).__init__(**kwargs)
+    def __init__(self, adapters, **kwargs):
+        super(JsonDatabaseAdapter, self).__init__(adapters, **kwargs)
         database_path = self.kwargs.get("database", "database.db")
         self.database = Database(database_path)
 
