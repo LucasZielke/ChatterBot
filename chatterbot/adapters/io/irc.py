@@ -30,5 +30,8 @@ class IRCAdapter(IOAdapter):
         return self.ircmsg
 
     def process_response(self, statement):
-        print(statement.text)
+        """
+        Sends the response out to the channel
+        """
+        self.ircsock.send("PRIVMSG "+ channel + statement +"\n")
         return statement.text
